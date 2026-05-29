@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈웨더 날씨 API</title>
+    <style>
+        .wrap{
+            width: 100%;
+            height: 100vh;
+
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+            .wrap > img{
+                width: 100%;
+                height: 100%;
+
+                position: absolute;
+                z-index: 1;
+
+                border-radius: 7px;
+            }
+            .inBox{
+                width: 700px;
+                height: 450px;
+                background-color: rgba(196, 196, 196, 0.377);
+
+                z-index: 2;
+
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+
+                border-radius: 7px;
+            }
+                .btn-box {
+                    margin-top: 15px; 
+                    display: flex;   
+                    gap: 10px;     
+                }
+
+                .btn-box > button {
+                    padding: 8px 15px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: white;
+                    cursor: pointer;
+                }
+
+
+    </style>
+
+</head>
+<body>
+    <div class="wrap">
+        <img src="./img/sky.jpg" alt="하늘배경">
+        <div class="inBox">
+            <h2>날씨</h2>
+            <div id="dis"></div>
+            <div id="wind"></div>
+            <div id="description"></div>
+            <img id="con" alt="날씨 아이콘"/>
+
+            <div class="btn-box">
+                <button onclick="getWeather('Tokyo')">일본</button>
+                <button onclick="getWeather('Toronto')">캐나다</button>
+                <button onclick="getWeather('Moscow')">러시아</button>
+                <button onclick="getWeather('Chile')">칠레</button>
+
+            </div>
+        </div>
+    </div>
+
+  
+
+    
+
+
+
+
+    
+
+
+
+
+    <script>
+        let dis = document.querySelector("#dis")
+        let con = document.querySelector("#con")
+        
+        const API_KEY = '879be6633aa90d15165bf84e6de8391d'
+        // const cityname = 'Ansan'
+        
+
+        async function getWeather(cityname){
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API_KEY}&units=metric&lang=kr`)
+            let data = await res.json() // js가 알 수 있는 객체로 변환
+
+
+            dis.innerHTML = '오늘의 온도 : ' + data.main.temp + " ℃" ;
+
+            let wind = document.querySelector("#wind")
+            wind.innerHTML = '오늘의 풍속 : ' + data.wind.speed + " m/s" ; 
+
+            description.innerHTML = '오늘의 날씨 : ' + data.weather[0].description ; 
+
+
+            let icon = data.weather[0].icon;
+            let iconUrl= `http://openweathermap.org/img/wn/${icon}@2x.png`
+            
+            console.log(data)
+
+            con.setAttribute('src', iconUrl)
+
+        }
+        getWeather()
+    </script>
+</body>
+</html>
