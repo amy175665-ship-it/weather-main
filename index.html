@@ -23,11 +23,12 @@
                 z-index: 1;
 
                 border-radius: 7px;
+                object-fit: cover; 
             }
             .inBox{
-                width: 700px;
-                height: 450px;
-                background-color: rgba(196, 196, 196, 0.377);
+                width: 900px;
+                height: 650px;
+                background-color: rgba(192, 192, 192, 0.65); 
 
                 z-index: 2;
 
@@ -36,20 +37,50 @@
                 flex-direction: column;
                 align-items: center;
 
-                border-radius: 7px;
+                border-radius: 15px;
+                box-shadow: 0px 10px 30px rgba(0,0,0,0.5); 
+                padding: 20px;
+                box-sizing: border-box;
             }
+               
+                .inBox > h2 {
+                    font-size: 35px;
+                    color: #0066ff85; 
+                    margin: 0 0 20px 0;
+                }
+
+                .inBox > div[id] {
+                    font-size: 18px; 
+                    color: #000000; 
+                    font-weight: bold;
+                    margin: 12px 0;
+                }
+
+                #con {
+                    width: 150px;
+                    height: 150px;
+                    margin: 10px 0;
+                }
+
                 .btn-box {
-                    margin-top: 15px; 
+                    margin-top: 10px; 
                     display: flex;   
-                    gap: 10px;     
+                    gap: 20px;   
+                    
+                    
                 }
 
                 .btn-box > button {
-                    padding: 8px 15px;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: white;
+                    padding: 15px 35px;
+                    font-size: 16px; 
+                    font-weight: bold;
+                    border: 3px solid #fff;
+                    border-radius: 10px;
+                    background-color: #ffffff;
+                    color: #111111;
                     cursor: pointer;
+
+                    box-shadow: 0px 10px 10px rgba(0,0,0,0.5); 
                 }
 
 
@@ -61,6 +92,7 @@
         <img src="./img/sky.jpg" alt="하늘배경">
         <div class="inBox">
             <h2>날씨</h2>
+            <div id="dt"></div>
             <div id="dis"></div>
             <div id="wind"></div>
             <div id="description"></div>
@@ -101,17 +133,26 @@
             let data = await res.json() // js가 알 수 있는 객체로 변환
 
 
-            dis.innerHTML = '오늘의 온도 : ' + data.main.temp + " ℃" ;
+            dis.innerHTML = '온도 : ' + data.main.temp + " ℃" ;
 
             let wind = document.querySelector("#wind")
-            wind.innerHTML = '오늘의 풍속 : ' + data.wind.speed + " m/s" ; 
+            wind.innerHTML = '풍속 : ' + data.wind.speed + " m/s" ; 
 
-            description.innerHTML = '오늘의 날씨 : ' + data.weather[0].description ; 
+            description.innerHTML = '날씨 : ' + data.weather[0].description ; 
 
 
             let icon = data.weather[0].icon;
             let iconUrl= `http://openweathermap.org/img/wn/${icon}@2x.png`
+
+            let dt = document.querySelector("#dt")
+           
+            let date = new Date(data.dt * 1000);
+            let timeString = date.toLocaleString('ko-KR'); 
             
+            dt.innerHTML = '오늘의 날짜 : ' + timeString ;
+            
+
+
             console.log(data)
 
             con.setAttribute('src', iconUrl)
